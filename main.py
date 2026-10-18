@@ -1,18 +1,17 @@
 import os
+import json
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
-from openai import OpenAI
+from google import genai
 from dotenv import load_dotenv
 
 load_dotenv()
 
 app = FastAPI(title="Plataforma de Estudos para Concursos")
-# ERRADO (faz com que a OpenAI revogue):
-# client = OpenAI(api_key="sk-proj-...")
 
-# CORRETO e SEGURO:
-client = OpenAI(api_key=os.getenv("Gemini_API_KEY="))
+# Inicializa o cliente do Gemini utilizando a chave salva nas variáveis de ambiente
+client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 class Redacao(BaseModel):
     banca: str
@@ -42,17 +41,18 @@ def corrigir_redacao(dados: Redacao):
     2. Avaliação por Critérios (Gramática, Estrutura e Conteúdo)
     3. Pontos de Erro Detectados
     4. Recomendações Práticas de Melhoria
+    
+    Tema: {dados.tema}
+    Texto do Aluno:
+    {dados.texto}
     """
 
     try:
-        resposta = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": prompt_sistema},
-                {"role": "user", "content": f"Tema: {dados.tema}\n\nTexto do Aluno:\n{dados.texto}"}
-            ]
+        response = client.models.generate_content(
+            model='gemini-1.5-flash',
+            contents=prompt_sistema,
         )
-        return {"resultado": resposta.choices[0].message.content}
+        return {"resultado": response.text}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -62,7 +62,7 @@ def gerar_questao(dados: QuestaoFilter):
     Atue como uma banca de concurso público de alto nível ({dados.banca}).
     Crie uma questão inédita de múltipla escolha (com 5 alternativas: A, B, C, D, E) sobre a matéria: {dados.materia}.
     
-    Retorne a resposta estritamente no seguinte formato JSON (sem markdown extra, apenas o JSON válido):
+    Retorne a resposta estritamente no seguinte formato JSON (sem marcadores de markdown como ```json, apenas a string JSON pura e válida):
     {{
       "enunciado": "Texto completo da questão...",
       "alternativas": [
@@ -77,11 +77,10 @@ def gerar_questao(dados: QuestaoFilter):
     }}
     """
     try:
-        resposta = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[{"role": "user", "content": prompt_questao}],
-            response_format={"type": "json_object"}
+        response = client.models.generate_content(
+            model='gemini-1.5-flash',
+            contents=prompt_questao,
         )
-        return {"questao": resposta.choices[0].message.content}
+        return {"questao": response.text}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
