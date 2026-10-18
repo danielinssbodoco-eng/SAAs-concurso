@@ -12,7 +12,7 @@ app = FastAPI(title="Plataforma de Estudos para Concursos")
 # client = OpenAI(api_key="sk-proj-...")
 
 # CORRETO e SEGURO:
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAI(api_key=os.getenv("Gemini"))
 
 class Redacao(BaseModel):
     banca: str
