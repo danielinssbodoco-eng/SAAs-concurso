@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma Completa para Concursos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style> body { font-family: 'Inter', sans-serif; } </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between">
+
+    <!-- Cabeçalho -->
+    <header class="bg-slate-950 border-b border-slate-800 py-4 px-6 shadow-sm">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="bg-emerald-500 text-slate-950 font-black px-2.5 py-1 rounded text-sm">PRO</span>
+                <span class="font-bold text-lg tracking-wide">Concurso<span class="text-emerald-400">Master</span></span>
+            </div>
+            <div class="flex space-x-2">
+                <button onclick="mudarAba('redacao')" id="btn-aba-redacao" class="px-3 py-1.5 rounded-lg text-sm font-medium bg-emerald-600 text-slate-950 transition">Redações</button>
+                <button onclick="mudarAba('questoes')" id="btn-aba-questoes" class="px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Questões</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="max-w-4xl w-full mx-auto p-4 md:p-6 my-6 flex-grow">
+        
+        <!-- ABA 1: REDAÇÃO -->
+        <div id="secao-redacao" class="bg-slate-950 border border-slate-800 p-6 md:p-8 rounded-xl shadow-xl">
+            <h1 class="text-2xl font-bold text-white mb-2">Correção Inteligente de Discursivas</h1>
+            <p class="text-slate-400 text-sm mb-6">Treine nos moldes das principais bancas do país.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block mb-1.5 text-sm font-medium text-slate-300">Banca Examinadora:</label>
+                    <select id="banca-redacao" class="w-full bg-slate-900 border border-slate-700 text-slate-100 rounded-lg p-2.5 text-sm">
+                        <option value="FGV">FGV</option>
+                        <option value="Cebraspe">Cebraspe / CESPE</option>
+                        <option value="FCC">FCC</option>
+                        <option value="Vunesp">Vunesp</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block mb-1.5 text-sm font-medium text-slate-300">Tema da Redação:</label>
+                    <input type="text" id="tema" placeholder="Ex: Controle externo na administração pública" class="w-full bg-slate-900 border border-slate-700 text-slate-100 rounded-lg p-2.5 text-sm">
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <label class="block mb-1.5 text-sm font-medium text-slate-300">Seu Texto:</label>
+                <textarea id="texto" rows="8" placeholder="Cole seu texto aqui..." class="w-full bg-slate-900 border border-slate-700 text-slate-100 rounded-lg p-3 text-sm leading-relaxed"></textarea>
+            </div>
+
+            <button onclick="corrigir()" id="btn-corrigir" class="w-full bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold py-3 rounded-lg transition text-sm">
+                Solicitar Correção Detalhada
+            </button>
+
+            <div id="resultado-redacao" class="mt-8 p-6 bg-slate-900 border border-slate-800 rounded-xl hidden">
+                <h3 class="text-emerald-400 font-semibold mb-3">Parecer Preliminar da Banca</h3>
+                <div id="texto-resultado-redacao" class="text-slate-300 text-sm space-y-3 whitespace-pre-line leading-relaxed"></div>
+            </div>
+        </div>
+
+        <!-- ABA 2: QUESTÕES (Estilo TecConcursos) -->
+        <div id="secao-questoes" class="bg-slate-950 border border-slate-800 p-6 md:p-8 rounded-xl shadow-xl hidden">
+            <h1 class="text-2xl font-bold text-white mb-2">Caderno de Questões Inéditas por IA</h1>
+            <p class="text-slate-400 text-sm mb-6">Treine com foco na exigência da sua banca.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block mb-1.5 text-sm font-medium text-slate-300">Banca:</label>
+                    <select id="banca-questao" class="w-full bg-slate-900 border border-slate-700 text-slate-100 rounded-lg p-2.5 text-sm">
+                        <option value="FGV">FGV</option>
+                        <option value="Cebraspe">Cebraspe</option>
+                        <option value="FCC">FCC</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block mb-1.5 text-sm font-medium text-slate-300">Matéria:</label>
+                    <input type="text" id="materia" placeholder="Ex: Direito Administrativo - Licitações" class="w-full bg-slate-900 border border-slate-700 text-slate-100 rounded-lg p-2.5 text-sm">
+                </div>
+            </div>
+
+            <button onclick="gerarQuestao()" id="btn-gerar" class="w-full bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold py-3 rounded-lg transition text-sm mb-6">
+                Gerar Nova Questão
+            </button>
+
+            <div id="painel-questao" class="hidden space-y-4">
+                <div id="enunciado-questao" class="p-4 bg-slate-900 border border-slate-800 rounded-lg text-sm leading-relaxed"></div>
+                <div id="alternativas-questao" class="space-y-2"></div>
+                <button onclick="responderQuestao()" id="btn-responder" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg text-sm transition">Responder</button>
+                
+                <div id="comentario-questao" class="mt-4 p-4 bg-slate-900 border border-slate-800 rounded-xl hidden text-sm space-y-2"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-slate-950 border-t border-slate-800 text-center py-4 text-xs text-slate-400">
+        Plataforma de Alta Performance para Concursos.
+    </footer>
+
+    <script>
+        let questaoAtualData = null;
+
+        function mudarAba(aba) {
+            const secRedacao = document.getElementById('secao-redacao');
+            const secQuestoes = document.getElementById('secao-questoes');
+            const btnRedacao = document.getElementById('btn-aba-redacao');
+            const btnQuestoes = document.getElementById('btn-aba-questoes');
+
+            if (aba === 'redacao') {
+                secRedacao.classList.remove('hidden');
+                secQuestoes.classList.add('hidden');
+                btnRedacao.className = "px-3 py-1.5 rounded-lg text-sm font-medium bg-emerald-600 text-slate-950 transition";
+                btnQuestoes.className = "px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition";
+            } else {
+                secRedacao.classList.add('hidden');
+                secQuestoes.classList.remove('hidden');
+                btnQuestoes.className = "px-3 py-1.5 rounded-lg text-sm font-medium bg-emerald-600 text-slate-950 transition";
+                btnRedacao.className = "px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition";
+            }
+        }
+
+        async function corrigir() {
+            const btn = document.getElementById('btn-corrigir');
+            const resultadoDiv = document.getElementById('resultado-redacao');
+            const textoResultado = document.getElementById('texto-resultado-redacao');
+            
+            const tema = document.getElementById('tema').value;
+            const texto = document.getElementById('texto').value;
+
+            if (!tema || texto.length < 50) {
+                alert('Preencha o tema e escreva uma redação com pelo menos 50 caracteres.');
+                return;
+            }
+
+            btn.innerText = "Analisando critérios...";
+            btn.disabled = true;
+            resultadoDiv.classList.add('hidden');
+
+            try {
+                const response = await fetch('/corrigir', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ banca: document.getElementById('banca-redacao').value, tema, texto })
+                });
+                const json = await response.json();
+                if (response.ok) {
+                    textoResultado.innerText = json.resultado;
+                    resultadoDiv.classList.remove('hidden');
+                } else {
+                    alert('Erro: ' + (json.detail || 'Falha ao processar.'));
+                }
+            } catch (err) {
+                alert('Erro de conexão.');
+            } finally {
+                btn.innerText = "Solicitar Correção Detalhada";
+                btn.disabled = false;
+            }
+        }
+
+        async function gerarQuestao() {
+            const btn = document.getElementById('btn-gerar');
+            const painel = document.getElementById('painel-questao');
+            const materia = document.getElementById('materia').value;
+
+            if (!materia) {
+                alert('Digite a matéria ou assunto da questão.');
+                return;
+            }
+
+            btn.innerText = "Gerando questão inédita...";
+            btn.disabled = true;
+            painel.classList.add('hidden');
+
+            try {
+                const response = await fetch('/gerar-questao', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ banca: document.getElementById('banca-questao').value, materia })
+                });
+                const json = await response.json();
+                if (response.ok) {
+                    questaoAtualData = JSON.parse(json.questao);
+                    
+                    document.getElementById('enunciado-questao').innerText = questaoAtualData.enunciado;
+                    
+                    let htmlAlt = '';
+                    questaoAtualData.alternativas.forEach((alt, idx) => {
+                        let letra = alt.charAt(0);
+                        htmlAlt += `<label class="flex items-center space-x-3 p-3 bg-slate-900 border border-slate-800 rounded-lg cursor-pointer hover:border-emerald-500 transition">
+                            <input type="radio" name="alternativa" value="${letra}" class="text-emerald-500 focus:ring-emerald-500">
+                            <span class="text-sm">${alt}</span>
+                        </label>`;
+                    });
+                    document.getElementById('alternativas-questao').innerHTML = htmlAlt;
+                    document.getElementById('comentario-questao').classList.add('hidden');
+                    painel.classList.remove('hidden');
+                } else {
+                    alert('Erro ao gerar questão.');
+                }
+            } catch (err) {
+                alert('Erro de conexão.');
+            } finally {
+                btn.innerText = "Gerar Nova Questão";
+                btn.disabled = false;
+            }
+        }
+
+        function responderQuestao() {
+            const selecionada = document.querySelector('input[name="alternativa"]:checked');
+            if (!selecionada) {
+                alert('Selecione uma alternativa.');
+                return;
+            }
+
+            const respostaUser = selecionada.value;
+            const gabaritoCorreto = questaoAtualData.gabarito.trim().charAt(0);
+            const comentarioDiv = document.getElementById('comentario-questao');
+
+            let html = `<h4 class="font-bold ${respostaUser === gabaritoCorreto ? 'text-emerald-400' : 'text-red-400'}">
+                ${respostaUser === gabaritoCorreto ? '✔ Resposta Correta!' : '✖ Resposta Incorreta. Gabarito: ' + questaoAtualData.gabarito}
+            </h4>
+            <p class="text-slate-300 mt-2"><strong>Comentário do Professor / Banca:</strong><br>${questaoAtualData.comentario}</p>`;
+
+            comentarioDiv.innerHTML = html;
+            comentarioDiv.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
