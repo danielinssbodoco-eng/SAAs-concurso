@@ -97,24 +97,24 @@
         </div>
 
     </main>
-<!-- Secção de Feedback e Comentários -->
-<div class="mt-12 bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl">
-    <h3 class="text-xl font-bold text-white mb-2">💬 Deixe o seu Feedback ou Sugestão</h3>
-    <p class="text-slate-400 text-sm mb-4">Ajudou nos seus estudos? Encontrou algum erro? Deixe o seu comentário abaixo:</p>
+<!-- Secção de Feedback e Comentários Centralizada e Alinhada -->
+<div class="mt-12 max-w-2xl mx-auto bg-slate-900 border border-slate-800 rounded-xl p-8 shadow-2xl text-center">
+    <h3 class="text-2xl font-bold text-white mb-2">💬 Deixe o seu Feedback </h3>
+    <p class="text-slate-400 text-sm mb-6">Ajudou nos seus estudos? Encontrou algum erro? Deixe o seu comentário abaixo:</p>
     
-    <!-- Formulário que envia direto para o seu e-mail de forma gratuita -->
-    <form action="https://formspree.io/f/SEU_ID_DO_FORMSPREE_AQUI" method="POST" class="space-y-4">
+    <!-- Formulário alinhado à esquerda para facilitar a leitura, mas dentro do bloco centralizado -->
+    <form action="https://formspree.io/f/xaeqknlr" method="POST" class="space-y-5 text-left">
         <div>
-            <label class="block text-sm font-medium text-slate-300 mb-1">O seu Nome ou Apelido</label>
-            <input type="text" name="nome" required class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-indigo-500" placeholder="Ex: Concurseiro Focado">
+            <label class="block text-sm font-medium text-slate-300 mb-2">O seu Nome ou Apelido</label>
+            <input type="text" name="nome" required class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-indigo-500 transition duration-150" placeholder="Ex: Concurseiro Focado">
         </div>
         <div>
-            <label class="block text-sm font-medium text-slate-300 mb-1">O seu E-mail (opcional)</label>
-            <input type="email" name="email" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-indigo-500" placeholder="seu@email.com">
+            <label class="block text-sm font-medium text-slate-300 mb-2">O seu E-mail (opcional)</label>
+            <input type="email" name="email" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-indigo-500 transition duration-150" placeholder="seu@email.com">
         </div>
         <div>
-            <label class="block text-sm font-medium text-slate-300 mb-1">O seu Comentário / Sugestão</label>
-            <textarea name="mensagem" rows="3" required class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-indigo-500" placeholder="Achei excelente para treinar a FGV, mas seria legal se..."></textarea>
+            <label class="block text-sm font-medium text-slate-300 mb-2">O seu Comentário / Sugestão</label>
+            <textarea name="mensagem" rows="4" required class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-indigo-500 transition duration-150" placeholder="Achei excelente para treinar a FGV, mas seria legal se..."></textarea>
         </div>
         <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-lg transition duration-200 shadow-lg shadow-indigo-600/30">
             Enviar Comentário
