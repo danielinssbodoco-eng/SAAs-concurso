@@ -8,15 +8,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = FastAPI(title="Plataforma de Estudos para Concursos")
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY", "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"))
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY", "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"))
 
 class Redacao(BaseModel):
     banca: str
     tema: str
     texto: str
-
-class QuestaoRequest(BaseModel.model_config if hasattr(BaseModel, 'model_config') else object):
-    pass
 
 class QuestaoFilter(BaseModel):
     banca: str
