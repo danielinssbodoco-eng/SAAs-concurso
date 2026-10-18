@@ -8,7 +8,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = FastAPI(title="Plataforma de Estudos para Concursos")
-client = OpenAI(api_key=os.getenv("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"))
+# ERRADO (faz com que a OpenAI revogue):
+# client = OpenAI(api_key="sk-proj-...")
+
+# CORRETO e SEGURO:
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 class Redacao(BaseModel):
     banca: str
