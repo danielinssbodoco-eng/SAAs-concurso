@@ -1,5 +1,5 @@
 fastapi
 uvicorn
-Gemini>=1.0.0
+google-genai
 python-dotenv
 pydantic
