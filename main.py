@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = FastAPI(title="Plataforma de Estudos para Concursos")
-client = OpenAI(api_key=os.getenv("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"))
+client = OpenAI(api_key=os.getenv("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"))
 
 class Redacao(BaseModel):
     banca: str
